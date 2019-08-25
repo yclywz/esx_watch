@@ -118,7 +118,7 @@
 
                 if($('#process').val() == "active"){
                     setTimeout(function(){
-                        $.post("http://watch/watch-timer", JSON.stringify({
+                        $.post("http://esx_watch/watch-timer", JSON.stringify({
                             load: true
                         })) 
                     },500)
@@ -128,14 +128,14 @@
             document.addEventListener('keyup', function (data) {
                 if (data.which == 27) {
                     SHOW_HIDE();
-                    $.post("http://watch/watch-callback", JSON.stringify({
+                    $.post("http://esx_watch/watch-callback", JSON.stringify({
                         hide: true
                     }))
                 }
             });
 
         
-            $.post("http://watch/watch-callback", JSON.stringify({
+            $.post("http://esx_watch/watch-callback", JSON.stringify({
                 load: true
             }))   
         });
