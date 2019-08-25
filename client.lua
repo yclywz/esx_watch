@@ -179,7 +179,7 @@ Citizen.CreateThread(
             -- Control ID 20 is the 'Z' key by default
             -- 244 = M
             -- Use https://wiki.fivem.net/wiki/Controls to find a different key
-            if (IsControlJustPressed(0, 56)) and GetLastInputMethod( 0 ) then
+            if (IsControlJustPressed(0, Keys["F9"])) and GetLastInputMethod( 0 ) then
                 WatchEnabled = not WatchEnabled 
                 REQUEST_NUI_FOCUS(WatchEnabled)
                 
