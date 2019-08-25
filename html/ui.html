@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Watch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="material-icons.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
+    <link href="http://www.youroleplay.com/tablet/assets/css/bootstrap_01.css" rel="stylesheet" type="text/css"/>
+    <link href="http://www.youroleplay.com/assets/css/custom-bootstrap-margin-padding.css" rel="stylesheet" type="text/css"/>
+    <script src="nui://jquery.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    
+    <script src="http://www.youroleplay.com/tablet/assets/js/popper.min.js"></script>
+    <script src="http://www.youroleplay.com/tablet/assets/js/bootstrap.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: sans-serif;
+            overflow: hidden;
+            max-height: 100vh;
+            min-height: 100vh;
+            /* margin: 0; */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            
+        }
+
+        #watch{
+            background: url('watch.png');
+            background-size: 100% 100%;
+            position: absolute;
+            width: 140px;
+            height: 249px;
+            display: flex;
+            flex-direction: column;
+            bottom: 50px;
+            right: 50px;
+        }
+        #watch .watch{
+            width: 100px;
+        }
+        #watch #hour{
+            font-family: 'Dosis', sans-serif;
+            position: absolute;
+            color:#ffffff;
+            font-size:36px;
+            margin-top: 75px;
+            width: 130px;
+            text-align: center;
+        }
+        #watch #week{
+            font-family: 'Dosis', sans-serif;
+            position: absolute;
+            color:#ffffff;
+            font-size:18px;
+            margin-top: 120px;
+            width: 130px;
+            text-align: center;
+        }
+        #watch #date{
+            font-family: 'Dosis', sans-serif;
+            position: absolute;
+            color:#ffffff;
+            font-size:12px;
+            margin-top: 145px;
+            width: 130px;
+            text-align: center;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <input type="hidden" id="process" value="">
+    <div id="watch">
+        <div id="hour"></div>
+        <div id="week"></div>
+        <div id="date"></div>
+    </div>
+    <script>
+        // When the document is ready
+        $(document).ready(function () {
+
+            var $watchContainer = $("#watch");
+
+            // Show or hide the page
+            function SHOW_HIDE(bool) {
+                if (bool) {
+                    $watchContainer.show();
+                    $('#process').val('active')
+                } else {
+                    $watchContainer.hide();
+                    $('#process').val('')
+                    window.blur() // unfocus the window
+                }
+            }
+
+            SHOW_HIDE(false);
+
+            window.addEventListener('message', function (event) {
+                var edata = event.data;
+
+                if (edata.showWatch) {
+                    SHOW_HIDE(true)
+                }else if (edata.hideWatch) {
+                    SHOW_HIDE()
+                }
+
+                $('#hour').html(edata.hour + ':' + edata.minute);
+                $('#week').html(edata.dayOfWeek);
+                $('#date').html( edata.dayOfMonth + ' ' + edata.month + ' ' + edata.year );
+
+                if($('#process').val() == "active"){
+                    setTimeout(function(){
+                        $.post("http://watch/watch-timer", JSON.stringify({
+                            load: true
+                        })) 
+                    },500)
+                }
+            });
+
+            document.addEventListener('keyup', function (data) {
+                if (data.which == 27) {
+                    SHOW_HIDE();
+                    $.post("http://watch/watch-callback", JSON.stringify({
+                        hide: true
+                    }))
+                }
+            });
+
+        
+            $.post("http://watch/watch-callback", JSON.stringify({
+                load: true
+            }))   
+        });
+</script>
+</body>
+
+</html>
