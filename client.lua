@@ -1,3 +1,25 @@
+local ESX           = nil
+local PlayerData	= {}
+local playerIdent   = nil
+local xPlayer       = nil
+local userjob       = nil
+local radartablet = false
+
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	PlayerData  = ESX.GetPlayerData()
+    playerIdent = ESX.GetPlayerData().identifier
+    userjob     = ESX.GetPlayerData().job.name
+end)
+
 local displayTime = true
 local useMilitaryTime = false
 local displayDayOfWeek = true
@@ -25,25 +47,25 @@ local Keys = {
 
 -- Define the variable used to open/close the tab
 local WatchEnabled = false
-local radartablet  = false
+
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1) 
 
 		if IsControlJustPressed(0, Keys['F10'])then
-			if radartablet == true then 
-                radartablet = false
+			if WatchEnabled == true then 
+                WatchEnabled = false
                 SendNUIMessage({
                     showWatch   = false,
-                    hour        = '',
-                    minute      = '',
+                    hour        = 0,
+                    minute      = 0,
                     dayOfWeek   = '' ,
                     month       = '',
                     dayOfMonth  = '',
                     year        = ''
                 })
 			else 
-                radartablet = true 
+                WatchEnabled = true 
                 
                 CalculateTimeToDisplay()
                 CalculateDayOfWeekToDisplay()
@@ -53,6 +75,7 @@ Citizen.CreateThread(function()
                     showWatch   = true,
                     hour        = hour,
                     minute      = minute,
+                    second      = second,
                     dayOfWeek   = dayOfWeek ,
                     month       = month,
                     dayOfMonth  = dayOfMonth,
@@ -60,28 +83,32 @@ Citizen.CreateThread(function()
                 })
 			end		
  
-		end	
+        end	
+        
+        
 	end
 end)
 
 
 function CalculateTimeToDisplay()
-	hour = GetClockHours()
-	minute = GetClockMinutes()
+	hour    = GetClockHours()
+    minute  = GetClockMinutes()
+    second  = GetClockSeconds()
 
-	if useMilitaryTime == false then
-		if hour == 0 or hour == 24 then
-			hour = 12
-		elseif hour >= 13 then
-			hour = hour - 12
-		end
-	end
+	if hour == 0 or hour == 24 then
+        hour = 12
+    elseif hour >= 13 then
+        hour = hour - 12
+    end
 
 	if hour <= 9 then
 		hour = "0" .. hour
 	end
 	if minute <= 9 then
 		minute = "0" .. minute
+    end
+    if second <= 9 then
+		second = "0" .. second
 	end
 end
 

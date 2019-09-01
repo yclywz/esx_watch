@@ -5,13 +5,13 @@ Discription "Watch"
 Version "0.1"
 
 files {
-    "html/watch.png",
     "html/bootstrap.min.css",
     "html/custom-bootstrap-margin-padding.css",
     "html/jquery.min.js",
     "html/popper.min.js",
     "html/bootstrap.min.js",
     "html/watch.js",
+    "html/watch.png",
     "html/ui.html"
 }
 
