@@ -7,6 +7,7 @@ Version "0.1"
 files {
     "html/bootstrap.min.css",
     "html/custom-bootstrap-margin-padding.css",
+    "html/watch.css",
     "html/jquery.min.js",
     "html/popper.min.js",
     "html/bootstrap.min.js",

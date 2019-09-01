@@ -16,8 +16,8 @@
     float: left;
     width: 35px;
     margin-top: 75px;
-    margin-left: 15px;
-    text-align: right;
+    margin-left: 25px;
+    text-align: center;
 }
 #watch #brackets{
     font-family: 'Dosis', sans-serif;
@@ -27,8 +27,8 @@
     margin-top: 75px;
     float: left;
     width: 35px;
-    margin-top: 75px;
-    margin-left: 75px;
+    margin-top: 70px;
+    margin-left: 48px;
     text-align: center;
 }
 #watch #minute{
@@ -39,8 +39,8 @@
     float: left;
     width: 35px;
     margin-top: 75px;
-    margin-left: 125px;
-    text-align: left;
+    margin-left: 73px;
+    text-align: center;
 }
 #watch #week{
     font-family: 'Dosis', sans-serif;
@@ -59,4 +59,4 @@
     margin-top: 145px;
     width: 130px;
     text-align: center;
-}      
+}   
