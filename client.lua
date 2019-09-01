@@ -25,67 +25,45 @@ local Keys = {
 
 -- Define the variable used to open/close the tab
 local WatchEnabled = false
-local WatchLoaded = true --false
+local radartablet  = false
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(1) 
 
-function REQUEST_NUI_FOCUS(bool)
-    SetNuiFocus(bool, bool) -- focus, cursor
+		if IsControlJustPressed(0, Keys['F10'])then
+			if radartablet == true then 
+                radartablet = false
+                SendNUIMessage({
+                    showWatch   = false,
+                    hour        = '',
+                    minute      = '',
+                    dayOfWeek   = '' ,
+                    month       = '',
+                    dayOfMonth  = '',
+                    year        = ''
+                })
+			else 
+                radartablet = true 
+                
+                CalculateTimeToDisplay()
+                CalculateDayOfWeekToDisplay()
+                CalculateDateToDisplay()
 
-    CalculateTimeToDisplay()
-    CalculateDayOfWeekToDisplay()
-    CalculateDateToDisplay()
-
-    if bool == true then
-        SendNUIMessage({
-            type        = 'show',
-            showWatch   = true,
-            hour        = hour,
-            minute      = minute,
-            dayOfWeek   = dayOfWeek ,
-            month       = month,
-            dayOfMonth  = dayOfMonth,
-            year        = year
-        })
-    else
-        SendNUIMessage({     
-            type        = 'show',  
-            hideWatch   = true,
-            hour        = hour,
-            minute      = minute,
-            dayOfWeek   = dayOfWeek ,
-            month       = month,
-            dayOfMonth  = dayOfMonth,
-            year        = year
-        })
-    end
-    return bool
-end
-
-RegisterNUICallback("watch-callback",function(data)
-        -- Do tablet hide shit
-        if data.load then
-            WatchLoaded = true
-        elseif data.hide then
-            SetNuiFocus(false, false) -- Don't REQUEST_NUI_FOCUS here
-            WatchEnabled = false
-        elseif data.click then
-        -- if u need click events
-        end
+                SendNUIMessage({
+                    showWatch   = true,
+                    hour        = hour,
+                    minute      = minute,
+                    dayOfWeek   = dayOfWeek ,
+                    month       = month,
+                    dayOfMonth  = dayOfMonth,
+                    year        = year
+                })
+			end		
+ 
+		end	
+	end
 end)
-RegisterNUICallback("watch-timer",function(data)
-    CalculateTimeToDisplay()
-    CalculateDayOfWeekToDisplay()
-    CalculateDateToDisplay()
 
-    SendNUIMessage({       
-        type        = 'start',
-        hour        = hour,
-        minute      = minute,
-        dayOfWeek   = dayOfWeek ,
-        month       = month,
-        dayOfMonth  = dayOfMonth,
-        year        = year
-    })
-end)
 
 function CalculateTimeToDisplay()
 	hour = GetClockHours()
@@ -158,45 +136,3 @@ function CalculateDateToDisplay()
 		month = "Aralik"
 	end
 end
-
-Citizen.CreateThread(
-    function()
-               
-        local l = 0
-        local timeout = false
-        while not WatchLoaded do
-            Citizen.Wait(0)
-            l = l + 1
-            if l > 500 then
-                WatchLoaded = true 
-                timeout = true
-            end
-        end
-
-        REQUEST_NUI_FOCUS(false) 
-
-        while true do
-            -- Control ID 20 is the 'Z' key by default
-            -- 244 = M
-            -- Use https://wiki.fivem.net/wiki/Controls to find a different key
-            if (IsControlJustPressed(0, Keys["F9"])) and GetLastInputMethod( 0 ) then
-                WatchEnabled = not WatchEnabled 
-                REQUEST_NUI_FOCUS(WatchEnabled)
-                
-                    
-
-                Citizen.Wait(0)
-            end
-            if (WatchEnabled) then
-                local ped = GetPlayerPed(-1)
-                DisableControlAction(0, 1, WatchEnabled) -- LookLeftRight
-                DisableControlAction(0, 2, WatchEnabled) -- LookUpDown
-                DisableControlAction(0, 24, WatchEnabled) -- Attack
-                DisablePlayerFiring(ped, WatchEnabled) -- Disable weapon firing
-                DisableControlAction(0, 142, WatchEnabled) -- MeleeAttackAlternate
-                DisableControlAction(0, 106, WatchEnabled) -- VehicleMouseControlOverride
-            end
-            Citizen.Wait(0)
-        end
-    end
-)

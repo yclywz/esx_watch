@@ -1,0 +1,73 @@
+* { box-sizing: border-box; }
+
+body {
+    font-family: sans-serif;
+    overflow: hidden;
+    max-height: 100vh;
+    min-height: 100vh;
+    /* margin: 0; */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    
+}
+
+#watch{
+    background: url('watch.png');
+    background-size: 100% 100%;
+    position: absolute;
+    width: 140px;
+    height: 249px;
+    display: flex;
+    flex-direction: column;
+    bottom: 50px;
+    right: 50px;
+}
+#watch .watch{
+    width: 100px;
+}
+#watch #hour{
+    font-family: 'Dosis', sans-serif;
+    position: absolute;
+    color:#ffffff;
+    font-size:36px;
+    margin-top: 75px;
+    width: 100px;
+    text-align: center;
+}
+#watch #brackets{
+    font-family: 'Dosis', sans-serif;
+    position: absolute;
+    color:#ffffff;
+    font-size:36px;
+    margin-top: 75px;
+    width: 20px;
+    text-align: center;
+}
+#watch #minute{
+    font-family: 'Dosis', sans-serif;
+    position: absolute;
+    color:#ffffff;
+    font-size:36px;
+    margin-top: 75px;
+    width: 100px;
+    text-align: center;
+}
+#watch #week{
+    font-family: 'Dosis', sans-serif;
+    position: absolute;
+    color:#ffffff;
+    font-size:18px;
+    margin-top: 120px;
+    width: 130px;
+    text-align: center;
+}
+#watch #date{
+    font-family: 'Dosis', sans-serif;
+    position: absolute;
+    color:#ffffff;
+    font-size:12px;
+    margin-top: 145px;
+    width: 130px;
+    text-align: center;
+}      
